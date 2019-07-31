@@ -20,7 +20,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * <ul>
  * <li>缺点：内存消耗大，会将excel信息全部加载到内存再进行处理。</li>
  * <li>优点：现成的API，使用和理解更简单。</li>
- * <li>使用场景:可以处理数据量较小的Excel。</li>
+ * <li>使用场景：可以处理数据量较小的Excel。</li>
  * </ul>
  * @author KaiKang
  * @since JDK1.8

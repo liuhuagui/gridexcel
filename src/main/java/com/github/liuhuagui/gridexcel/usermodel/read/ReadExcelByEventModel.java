@@ -21,7 +21,7 @@ import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
  * <ul>
  * <li>缺点：没有现成的API，使用和理解较为复杂，适合中高级程序员（GridExcel的目标之一就是让EventModel的使用变得简单）</li>
  * <li>优点：非常小的内存占用，并没有在一开始就将所有内容加载到内存中，而是把主体内容的处理（存储，使用，丢弃）都交给了用户，用户可以自定义监听函数来处理这些内容。</li>
- * <li>使用场景:可以处理较大数据量的Excel，避免OOM和频繁FullGC</li>
+ * <li>使用场景：可以处理较大数据量的Excel，避免OOM和频繁FullGC</li>
  * </ul>
  * @author KaiKang
  * @since JDK1.8
