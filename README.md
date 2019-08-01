@@ -1,4 +1,6 @@
-﻿- **[快速使用](https://github.com/liuhuagui/gridexcel#%E5%BF%AB%E9%80%9F%E4%BD%BF%E7%94%A8)**
+﻿
+---
+- **[快速使用](https://github.com/liuhuagui/gridexcel#%E5%BF%AB%E9%80%9F%E4%BD%BF%E7%94%A8)**
 - **[GitHUb地址【https://github.com/liuhuagui/gridexcel】](https://github.com/liuhuagui/gridexcel)**
 ### Apache POI
 在业务开发中我们经常会遇到Excel的导入导出，而 **Apache POI** 是Java开发者常用的API。
@@ -7,6 +9,10 @@
 > Universal solution for reading and writing simply Excel based on functional programming and POI EventModel
 
 GridExcel是基于Java8函数式编程和POI EventModel实现的用于Excel简单读写的通用解决方案。
+
+- 基于POI EventModel，在读写数据量非常大的Excel时，降低内存占用避免OOM与频繁FullGC
+- 基于函数编程，支持关联对象等多种复杂情况的处理，学习成本低
+- 支持流式API，使代码编写和理解更简单，更直观
 ### EventModel
 什么是**EventModel**？在**POI FAQ**（常见问题解答）【[https://poi.apache.org/help/faq.html#faq-N100C2](https://poi.apache.org/help/faq.html#faq-N100C2)】官方给出解释：
 > The SS eventmodel package is an API for reading Excel files without loading the whole spreadsheet into memory. It does require more knowledge on the part of the user, but reduces memory consumption by more than tenfold. It is based on the AWT event model in combination with SAX. If you need read-only access, this is the best way to do it.
@@ -73,7 +79,7 @@ POI的使用对我们来说很常见，对下面两个概念应该并不陌生�
   - Formula evaluation is not supported
 #### 解决途径
 - https://github.com/liuhuagui/gridexcel
-基于Java函数编程（Lambda），使用环境Java1.8或更高，学习成本：Lambda
+基于Java函数编程（Lambda），支持流式API，使用环境Java1.8或更高，学习成本：Lambda
 - https://github.com/alibaba/easyexcel
 基于反射+注解+监听器，使用环境Java1.6或以上，学习成本：模型注解
 
@@ -88,22 +94,66 @@ POI的使用对我们来说很常见，对下面两个概念应该并不陌生�
     <version>2.2</version>
 </dependency>
 ```
-#### ReadExcelByUserModel
+#### GridExcel.java
+GridExcel.java提供了多种静态方法，可以直接使用，具体式例可参考测试代码（提供了测试数据和测试文件）：
+- https://github.com/liuhuagui/gridexcel/blob/master/src/test/java/ReadTest.java
+- https://github.com/liuhuagui/gridexcel/blob/master/src/test/java/WriteTest.java
+#### 流式API
+```java
+/**
+  * 业务逻辑处理方式三选一：
+  * 1.启用windowListener，并将业务逻辑放在该函数中。
+  * 2.不启用windowListener，使用get()方法取回全部数据集合，做后续处理。
+  * 3.readFunction函数，直接放在函数中处理 或 使用final or effective final的局部变量存放这写数据，做后续处理。
+  * 注意：使用EventModel时readFunction函数的输入为每行的cell值集合List<String>。
+  * @throws Exception
+  */
+ @Test
+ public void readXlsxByEventModel() throws Exception {
+     InputStream resourceAsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("2007.xlsx");
+     GridExcel.readByEventModel(resourceAsStream,TradeOrder.class,ExcelType.XLSX)
+             .window(2,ts -> System.out.println(JSON.toJSONString(ts)))//推荐在这里执行自己的业务逻辑
+             .process(cs ->{
+                 TradeOrder tradeOrder = new TradeOrder();
+                 tradeOrder.setTradeOrderId(Long.valueOf(cs.get(0)));
+                 Consultant consultant = new  Consultant();
+                 consultant.setConsultantName(cs.get(3));
+                 tradeOrder.setConsultant(consultant);
+                 tradeOrder.setPaymentRatio(cs.get(16));
+                 return tradeOrder;
+             },1);
+ }
+ /**
+  * 使用Streaming UserModel写出数据到Excel
+  * @throws Exception
+  */
+ @Test
+ public void writeExcelByStreaming() throws Exception {
+     GridExcel.writeByStreaming(TradeOrder.class)
+             .head(writeFunctionMap())//对象字段到Excel列的映射
+             .createSheet()
+             .process(MockData.data())//模拟数据。在这里设置业务数据集合。
+             .write(FileUtils.openOutputStream(new File("/excel/test.xlsx")));
+ }
+```
+#### ReadExcel
+##### ReadExcelByUserModel
 Use user model to read excel file. userModel ——
 - **缺点**：内存消耗大，会将excel信息全部加载到内存再进行处理。
 - **优点**：现成的API，使用和理解更简单。
 - **使用场景**：可以处理数据量较小的Excel。
-#### ReadExcelByEventModel
+##### ReadExcelByEventModel
 Use event model to read excel file. eventModel ——
 - **缺点**：没有现成的API，使用和理解较为复杂，适合中高级程序员（GridExcel的目标之一就是让EventModel的使用变得简单）
 - **优点**：非常小的内存占用，并没有在一开始就将所有内容加载到内存中，而是把主体内容的处理（存储，使用，丢弃）都交给了用户，用户可以自定义监听函数来处理这些内容。
 - **使用场景**：可以处理较大数据量的Excel，避免OOM和频繁FullGC
-#### WriteExcelByUserModel
+#### WriteExcel
+##### WriteExcelByUserModel
 Use user model to write excel file. userModel ——
 - **缺点**：会将产生的spreadsheets对象整个保存在内存中，所以write Excel的大小受到堆内存（Heap space）大小限制。
 - **优点**：使用和理解更简单。
 - **使用场景**：可以写出数据量较小的Excel。
-#### WriteExcelByStreaming
+##### WriteExcelByStreaming
 Use API-compatible streaming extension of XSSF to write very large excel file. streaming userModel——
 - **缺点**：
   - 仅支持XSSF；
@@ -112,11 +162,6 @@ Use API-compatible streaming extension of XSSF to write very large excel file. s
   - Only a limited number of rows are accessible at a point in time.
 - **优点**：通过滑动窗口来实现，内存中只保留指定size of rows的内容，超出部分被写出到临时文件，write Excel的大小不再受到堆内存（Heap space）大小限制。
 - **使用场景**：可以写出非常大的Excel。
-
-#### GridExcel
-GridExcel.java提供了多种静态方法，可以直接使用，具体式例可参考测试代码（提供了测试数据和测试文件）：
-- https://github.com/liuhuagui/gridexcel/blob/master/src/test/java/ReadTest.java
-- https://github.com/liuhuagui/gridexcel/blob/master/src/test/java/WriteTest.java
 #### Issues
 在使用工具过程中出现问题，有功能添加或改动需求的可以向作者提Issue：https://github.com/liuhuagui/gridexcel/issues
 - 比如说，想要增加对首行以外的行列做样式扩展
