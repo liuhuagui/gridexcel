@@ -60,8 +60,6 @@ SS eventmodel包是一个用于读取Excel文件而不将整个电子表格加�
 ##### 函数接口（Lambda）
 这种方式是基于第5条方法调用的字节码指令**invokeDynamic**实现的，直接传递函数代码块，很好的支持复杂情况，性能较高，代码编写更简单结构更加简洁，而且对数据对象代码零侵入。
 
-当然如果你还没有使用Java1.8或更高版本，那么你可以参考**匿名内部类**或**反射+注解**，不过还是推荐**反射+注解**，[Alibaba/easyexcel【https://github.com/alibaba/easyexcel】](https://github.com/alibaba/easyexcel)对你来说会是不错的选择。
-
 ### 问题2. Excel导入或导出数据量比较大，造成`内存溢出`或`频繁的Full GC`，该如何解决？
 #### 解决方法
 - 读Excel —— eventmodel
@@ -80,10 +78,8 @@ POI的使用对我们来说很常见，对下面两个概念应该并不陌生�
 #### 解决途径
 - https://github.com/liuhuagui/gridexcel
 基于Java函数编程（Lambda），支持流式API，使用环境Java1.8或更高，学习成本：Lambda
-- https://github.com/alibaba/easyexcel
-基于反射+注解+监听器，使用环境Java1.6或以上，学习成本：模型注解
 
-实际上POI官网已经给了用户使用示例，而上述两个工具都只是做了自己的封装实现，使用者只需要拿来用就好。
+实际上POI官网已经给了用户使用示例，而上述工具只是做了自己的封装实现，让使用更方便。
  
 ---
 ### 快速使用
