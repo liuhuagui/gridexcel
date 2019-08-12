@@ -2,6 +2,8 @@
 ---
 - **[快速使用](https://github.com/liuhuagui/gridexcel#%E5%BF%AB%E9%80%9F%E4%BD%BF%E7%94%A8)**
 - **[GitHUb地址【https://github.com/liuhuagui/gridexcel】](https://github.com/liuhuagui/gridexcel)**
+- **[支持流式API](https://github.com/liuhuagui/gridexcel#流式api)**
+- **[支持无实体类读写Excel](https://github.com/liuhuagui/gridexcel#无实体类读写Excel)**
 ### Apache POI
 在业务开发中我们经常会遇到Excel的导入导出，而 **Apache POI** 是Java开发者常用的API。
 【[https://poi.apache.org/components/spreadsheet/index.html](https://poi.apache.org/components/spreadsheet/index.html)】
@@ -131,6 +133,32 @@ GridExcel.java提供了多种静态方法，可以直接使用，具体式例可
              .process(MockData.data())//模拟数据。在这里设置业务数据集合。
              .write(FileUtils.openOutputStream(new File("/excel/test.xlsx")));
  }
+```
+#### 无实体类读写Excel
+由于没有自定义业务实体类，这里我们可以使用Map.class来代替。下面是读入Excel的例子，写Excel可以参照实现。
+```java
+ /**
+     * No Entity无实体类读Excel文件
+     * 业务逻辑处理方式三选一：
+     * 1.启用windowListener，并将业务逻辑放在该函数中。
+     * 2.不启用windowListener，使用get()方法取回全部数据集合，做后续处理。
+     * 3.readFunction函数，直接放在函数中处理 或 使用final or effective final的局部变量存放这写数据，做后续处理。
+     * 注意：使用EventModel时readFunction函数的输入为每行的cell值集合List<String>。
+     * @throws Exception
+     */
+    @Test
+    public void readXlsxByEventModelWithoutEntity() throws Exception {
+        InputStream resourceAsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("2007.xlsx");
+        GridExcel.readByEventModel(resourceAsStream,Map.class,ExcelType.XLSX)
+                .window(2,ts -> System.out.println(JSON.toJSONString(ts)))//推荐在这里执行自己的业务逻辑
+                .process(cs ->{
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put("tradeOrderId",cs.get(0));
+                    map.put("consultantName",cs.get(3));
+                    map.put("paymentRatio",cs.get(16));
+                    return map;
+                },1);
+    }
 ```
 #### ReadExcel
 ##### ReadExcelByUserModel

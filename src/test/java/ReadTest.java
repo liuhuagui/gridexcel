@@ -2,6 +2,7 @@ import bean.Consultant;
 import bean.Payment;
 import bean.TradeOrder;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.github.liuhuagui.gridexcel.GridExcel;
 import com.github.liuhuagui.gridexcel.eventmodel.XLSEventModel;
 import com.github.liuhuagui.gridexcel.eventmodel.XLSXEventModel;
@@ -14,6 +15,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 部分测试样例。<br>
@@ -162,6 +165,29 @@ public class ReadTest {
                     tradeOrder.setConsultant(consultant);
                     tradeOrder.setPaymentRatio(row.getCell(16).getStringCellValue());
                     return tradeOrder;
+                },1);
+    }
+
+    /**
+     * No Entity无实体类读Excel文件
+     * 业务逻辑处理方式三选一：
+     * 1.启用windowListener，并将业务逻辑放在该函数中。
+     * 2.不启用windowListener，使用get()方法取回全部数据集合，做后续处理。
+     * 3.readFunction函数，直接放在函数中处理 或 使用final or effective final的局部变量存放这写数据，做后续处理。
+     * 注意：使用EventModel时readFunction函数的输入为每行的cell值集合List<String>。
+     * @throws Exception
+     */
+    @Test
+    public void readXlsxByEventModelWithoutEntity() throws Exception {
+        InputStream resourceAsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("2007.xlsx");
+        GridExcel.readByEventModel(resourceAsStream,Map.class,ExcelType.XLSX)
+                .window(2,ts -> System.out.println(JSON.toJSONString(ts)))//推荐在这里执行自己的业务逻辑
+                .process(cs ->{
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put("tradeOrderId",cs.get(0));
+                    map.put("consultantName",cs.get(3));
+                    map.put("paymentRatio",cs.get(16));
+                    return map;
                 },1);
     }
 
