@@ -190,6 +190,5 @@ Use API-compatible streaming extension of XSSF to write very large excel file. s
 在使用工具过程中出现问题，有功能添加或改动需求的可以向作者提Issue：https://github.com/liuhuagui/gridexcel/issues
 - 比如说，想要增加对首行以外的行列做样式扩展
 
-
-
-如有疑问可以联系作者：799600902@qq.com
+可关注作者公众号
+![在这里插入图片描述](https://raw.githubusercontent.com/liuhuagui/gridexcel/master/qrcode.jpg)

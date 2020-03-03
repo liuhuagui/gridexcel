@@ -191,4 +191,26 @@ public class ReadTest {
                 },1);
     }
 
+    @Test
+    public void readMissingCellXlsxByEventModel() throws Exception {
+        InputStream resourceAsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("test.xlsx");
+        GridExcel.readByEventModel(resourceAsStream,Map.class,ExcelType.XLSX)
+                .window(2,ts -> System.out.println(JSON.toJSONString(ts)))//推荐在这里执行自己的业务逻辑
+                .process(cs ->{
+                    System.out.println(cs.size());
+                    return null;
+                },1);
+    }
+
+    @Test
+    public void readMissingCellXlsByEventModel() throws Exception {
+        InputStream resourceAsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("test.xls");
+        GridExcel.readByEventModel(resourceAsStream,Map.class,ExcelType.XLS)
+                .window(2,ts -> System.out.println(JSON.toJSONString(ts)))//推荐在这里执行自己的业务逻辑
+                .process(cs ->{
+                    System.out.println(cs.size());
+                    return null;
+                },1);
+    }
+
 }
