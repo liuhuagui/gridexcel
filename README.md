@@ -1,12 +1,9 @@
-﻿
----
-- **[快速使用](https://github.com/liuhuagui/gridexcel#%E5%BF%AB%E9%80%9F%E4%BD%BF%E7%94%A8)**
-- **[GitHUb地址【https://github.com/liuhuagui/gridexcel】](https://github.com/liuhuagui/gridexcel)**
+﻿- **[快速使用](https://github.com/liuhuagui/gridexcel#%E5%BF%AB%E9%80%9F%E4%BD%BF%E7%94%A8)**
 - **[支持流式API](https://github.com/liuhuagui/gridexcel#流式api)**
 - **[支持无实体类读写Excel](https://github.com/liuhuagui/gridexcel#无实体类读写Excel)**
-### Apache POI
-在业务开发中我们经常会遇到Excel的导入导出，而 **Apache POI** 是Java开发者常用的API。
-【[https://poi.apache.org/components/spreadsheet/index.html](https://poi.apache.org/components/spreadsheet/index.html)】
+
+---
+## 介绍
 ### GridExcel
 > Universal solution for reading and writing simply Excel based on functional programming and POI EventModel
 
@@ -16,11 +13,17 @@ GridExcel是基于Java8函数式编程和POI EventModel实现的用于Excel简�
 - 基于函数编程，支持关联对象等多种复杂情况的处理，学习成本低
 - 支持流式API，使代码编写和理解更简单，更直观
 - 支持使用`阻塞窗口`+`监听函数`的方式去处理从Excel中读取的数据
+
+### Apache POI
+在业务开发中我们经常会遇到Excel的导入导出，而 **Apache POI** 是Java开发者常用的API。
+【[https://poi.apache.org/components/spreadsheet/index.html](https://poi.apache.org/components/spreadsheet/index.html)】
+
 ### EventModel
 什么是**EventModel**？在**POI FAQ**（常见问题解答）【[https://poi.apache.org/help/faq.html#faq-N100C2](https://poi.apache.org/help/faq.html#faq-N100C2)】官方给出解释：
 > The SS eventmodel package is an API for reading Excel files without loading the whole spreadsheet into memory. It does require more knowledge on the part of the user, but reduces memory consumption by more than tenfold. It is based on the AWT event model in combination with SAX. If you need read-only access, this is the best way to do it.
 
 SS eventmodel包是一个用于读取Excel文件而不将整个电子表格加载到内存中的API。 它确实需要用户掌握更多知识，但是将内存消耗减少了十倍以上。 它基于AWT（Abstract Window Toolkit）event model与SAX的结合。 如果您需要只读访问权限，这是最好的方式。
+
 ### 函数编程
 说到函数编程，就不得不提**Lambda表达式**，如果对Java8中的Lambda不了解或理解不深刻，可以看下甲骨文官网给出的这篇文章，【[https://www.oracle.com/technetwork/articles/java/architect-lambdas-part1-2080972.html](https://www.oracle.com/technetwork/articles/java/architect-lambdas-part1-2080972.html)】，个人认为这是Java8 Lambda从入门到进阶最好的文章之一。
 
@@ -36,7 +39,8 @@ SS eventmodel包是一个用于读取Excel文件而不将整个电子表格加�
 注意： **5、6、7**参考《深入理解Java虚拟机》第2版，8.3.3 动态类型语言支持。
 
 ---
-在POI的使用过程中，对大多数API User来说经常面临两个问题，这也是**GridExcel**致力解决的问题。
+## 解决两个问题
+**在POI的使用过程中，对大多数API User来说经常面临两个问题，这也是**GridExcel**致力解决的问题。**
 ### 问题1. 仅使用简单的导入导出功能，但每次业务的数据对象结构不同，需要重新编写处理方法，很麻烦！
 #### 解决方法
 将Excel处理逻辑抽取出来，封装成工具类。
@@ -63,7 +67,7 @@ SS eventmodel包是一个用于读取Excel文件而不将整个电子表格加�
 ##### 函数接口（Lambda）
 这种方式是基于第5条方法调用的字节码指令**invokeDynamic**实现的，直接传递函数代码块，很好的支持复杂情况，性能较高，代码编写更简单结构更加简洁，而且对数据对象代码零侵入。
 
-### 问题2. Excel导入或导出数据量比较大，造成`内存溢出`或`频繁的Full GC`，该如何解决？
+### 问题2. Excel一次性导入或导出数据量比较大，造成`内存溢出`或`频繁的Full GC`，该如何解决？
 #### 解决方法
 - 读Excel —— eventmodel
 - 写Excel —— streaming.SXSSFWorkbook
@@ -81,9 +85,8 @@ POI的使用对我们来说很常见，对下面两个概念应该并不陌生�
 #### 解决途径
 - https://github.com/liuhuagui/gridexcel
 基于Java函数编程（Lambda），支持流式API，使用环境Java1.8或更高，学习成本：Lambda
-
 实际上POI官网已经给了用户使用示例，而上述工具只是做了自己的封装实现，让使用更方便。
- 
+
 ---
 ### 快速使用
 ```xml
