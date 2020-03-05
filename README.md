@@ -15,6 +15,7 @@ GridExcel是基于Java8函数式编程和POI EventModel实现的用于Excel简�
 - 基于POI EventModel，在读写数据量非常大的Excel时，降低内存占用避免OOM与频繁FullGC
 - 基于函数编程，支持关联对象等多种复杂情况的处理，学习成本低
 - 支持流式API，使代码编写和理解更简单，更直观
+- 支持使用`阻塞窗口`+`监听函数`的方式去处理从Excel中读取的数据
 ### EventModel
 什么是**EventModel**？在**POI FAQ**（常见问题解答）【[https://poi.apache.org/help/faq.html#faq-N100C2](https://poi.apache.org/help/faq.html#faq-N100C2)】官方给出解释：
 > The SS eventmodel package is an API for reading Excel files without loading the whole spreadsheet into memory. It does require more knowledge on the part of the user, but reduces memory consumption by more than tenfold. It is based on the AWT event model in combination with SAX. If you need read-only access, this is the best way to do it.
@@ -89,7 +90,7 @@ POI的使用对我们来说很常见，对下面两个概念应该并不陌生�
 <dependency>
     <groupId>com.github.liuhuagui</groupId>
     <artifactId>gridexcel</artifactId>
-    <version>2.2</version>
+    <version>2.3</version>
 </dependency>
 ```
 #### GridExcel.java

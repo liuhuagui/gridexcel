@@ -1,8 +1,8 @@
 package com.github.liuhuagui.gridexcel.util;
 
-import java.util.Collection;
-
 import org.apache.commons.collections4.CollectionUtils;
+
+import java.util.Collection;
 
 /**
  * Assertion utility class that assists in validating arguments.

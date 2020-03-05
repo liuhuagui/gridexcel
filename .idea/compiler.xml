@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <addNotNullAssertions enabled="false" />
     <annotationProcessing>
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -10,8 +9,5 @@
         <module name="gridexcel" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="gridexcel" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>
