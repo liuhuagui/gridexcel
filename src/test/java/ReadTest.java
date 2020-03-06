@@ -211,7 +211,7 @@ public class ReadTest {
         GridExcel.readByEventModel(resourceAsStream, Map.class, ExcelType.XLSX)
                 .window(2, ts -> System.out.println(ts.size()))//推荐在这里执行自己的业务逻辑
                 .process(cs -> {
-//                    System.out.println(cs.size());
+                    System.out.println(cs.get(11));
                     return null;
                 }, 1);
     }
