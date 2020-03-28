@@ -12,7 +12,7 @@ GridExcel是基于Java8函数式编程和POI EventModel实现的用于Excel简�
 - 基于POI EventModel，在读写数据量非常大的Excel时，降低内存占用避免OOM与频繁FullGC
 - 基于函数编程，支持关联对象等多种复杂情况的处理，学习成本低
 - 支持流式API，使代码编写和理解更简单，更直观
-- 支持使用`阻塞窗口`+`监听函数`的方式去处理从Excel中读取的数据
+- 支持使用`滚动窗口`+`监听函数`的方式去处理从Excel中读取的数据
 
 ### Apache POI
 在业务开发中我们经常会遇到Excel的导入导出，而 **Apache POI** 是Java开发者常用的API。
