@@ -1,13 +1,13 @@
 package com.github.liuhuagui.gridexcel.eventmodel;
 
 import com.github.liuhuagui.gridexcel.bean.CellListOfRow;
-import org.apache.poi.ooxml.util.SAXHelper;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.ss.util.CellReference;
+import org.apache.poi.util.XMLHelper;
 import org.apache.poi.xssf.eventusermodel.ReadOnlySharedStringsTable;
 import org.apache.poi.xssf.eventusermodel.XSSFReader;
 import org.apache.poi.xssf.eventusermodel.XSSFReader.SheetIterator;
@@ -124,7 +124,7 @@ public class XLSXEventModel extends EventModel {
      * @throws IOException
      */
     protected XMLReader createSheetParser() throws SAXException, ParserConfigurationException, InvalidFormatException, IOException {
-        XMLReader parser = SAXHelper.newXMLReader();
+        XMLReader parser = XMLHelper.newXMLReader();
         ContentHandler handler = createSheetXMLHandler();
         parser.setContentHandler(handler);
         return parser;
@@ -169,7 +169,7 @@ public class XLSXEventModel extends EventModel {
                 //If the current line number≥ startRow, then the consumer function is enabled,
                 //otherwise the entire line record is directly discarded and is not processed.
                 if (rowNum >= startRow) {
-                    readConsumer.accept(new CellListOfRow<>(rowCellValues, null));
+                    readConsumer.accept(new CellListOfRow<>(rowCellValues, null, rowNum));
                 }
                 // init new row
                 rowCellValues = new ArrayList<String>();

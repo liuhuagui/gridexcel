@@ -15,9 +15,20 @@ public class CellListOfRow<T> {
      */
     private T defaultValue;
 
+    /**
+     * row Number (zero based)
+     */
+    private int rowNumber;
+
     public CellListOfRow(List<T> baseList, T defaultValue) {
         this.baseList = baseList;
         this.defaultValue = defaultValue;
+    }
+
+    public CellListOfRow(List<T> baseList, T defaultValue, int rowNumber) {
+        this.baseList = baseList;
+        this.defaultValue = defaultValue;
+        this.rowNumber = rowNumber;
     }
 
     public T get(int index) {
