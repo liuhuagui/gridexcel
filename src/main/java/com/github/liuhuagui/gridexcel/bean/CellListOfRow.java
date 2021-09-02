@@ -18,7 +18,7 @@ public class CellListOfRow<T> {
     /**
      * row Number (zero based)
      */
-    private int rowNumber;
+    private int rowNumber = -1;
 
     public CellListOfRow(List<T> baseList, T defaultValue) {
         this.baseList = baseList;
