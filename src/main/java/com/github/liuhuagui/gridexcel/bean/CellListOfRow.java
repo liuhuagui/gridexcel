@@ -43,4 +43,8 @@ public class CellListOfRow<T> {
         return baseList.size();
     }
 
+    public int getRowNumber() {
+        return rowNumber;
+    }
+
 }
